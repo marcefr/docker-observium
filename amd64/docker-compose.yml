@@ -6,23 +6,12 @@ version: '3'
 
 services:
   observiumdb:
-       image: mariadb:latest
+       build: .
        environment:
          - MYSQL_ROOT_PASSWORD=passw0rd
          - MYSQL_USER=observium
          - MYSQL_PASSWORD=passw0rd
          - MYSQL_DATABASE=observium
-         - TZ=Asia/Bangkok
-       volumes:
-         - /home/docker/observium/data:/var/lib/mysql
-#         - /home/docker/observium/mysql:/docker-entrypoint-initdb.d
-       networks:
-         - back-tier
-       restart: always
-
-  observiumap:
-       build: observiumap
-       environment:
          - OBSERVIUM_ADMIN_USER=admin
          - OBSERVIUM_ADMIN_PASS=passw0rd
          - OBSERVIUM_DB_HOST=observiumdb
@@ -30,20 +19,13 @@ services:
          - OBSERVIUM_DB_USER=observium 
          - OBSERVIUM_DB_PASS=passw0rd
          - OBSERVIUM_BASE_URL=http://10.55.5.92:8668
-         - TZ=Asia/Bangkok
+         - TZ=America/Argentina/Mendoza
        volumes:
-         - /home/docker/observium/logs:/opt/observium/logs
-#         - /home/docker/observium/lock:/opt/observium/lock
-         - /home/docker/observium/rrd:/opt/observium/rrd
-       networks:
-         - back-tier
+         - /opt/observium/mysql:/var/lib/mysql
+#         - /opt/observium/mysql:/docker-entrypoint-initdb.d
+         - /opt/observium/logs:/opt/observium/logs
+         - /opt/observium/lock:/opt/observium/lock
+         - /opt/observium/rrd:/opt/observium/rrd
        ports:
          - "8668:80"
        restart: always
-       depends_on:
-         - observiumdb
-
-networks:
-  back-tier:
-      driver: bridge
-
