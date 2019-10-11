@@ -28,10 +28,10 @@
 #  - Follow platform guideline specified in https://github.com/docker-library/official-images
 # 
 
-FROM ubuntu:16.04
+FROM mariadb:bionic
 
 LABEL maintainer "roccas@gmail.com"
-LABEL version="0.1"
+LABEL version="0.2"
 LABEL description="Docker container for Observium Community Edition"
 
 ARG OBSERVIUM_ADMIN_USER=admin
@@ -117,5 +117,5 @@ CMD ["/usr/bin/supervisord"]
 
 EXPOSE 80/tcp
 
-VOLUME ["/opt/observium/lock", "/opt/observium/logs","/opt/observium/rrd"]
+VOLUME ["/opt/observium/lock", "/opt/observium/logs","/opt/observium/rrd"."/opt/observium/mysql:/var/lib/mysq"]
 
